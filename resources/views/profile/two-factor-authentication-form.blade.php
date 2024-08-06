@@ -1,28 +1,27 @@
 <x-action-section>
     <x-slot name="title">
-        {{ __('Two Factor Authentication') }}
+        {{ __('Autenticación de dos factores') }}
     </x-slot>
-
     <x-slot name="description">
-        {{ __('Add additional security to your account using two factor authentication.') }}
+        {{ __('Agregue seguridad adicional a su cuenta utilizando la autenticación de dos factores.') }}
     </x-slot>
 
     <x-slot name="content">
         <h3 class="text-lg font-medium text-gray-900">
             @if ($this->enabled)
                 @if ($showingConfirmation)
-                    {{ __('Finish enabling two factor authentication.') }}
+                    {{ __('Termina de habilitar la autenticación de dos factores') }}
                 @else
-                    {{ __('You have enabled two factor authentication.') }}
+                    {{ __('Ha habilitado la autenticación de dos factores.') }}
                 @endif
             @else
-                {{ __('You have not enabled two factor authentication.') }}
+                {{ __('No has habilitado la autenticación de dos factores.') }}
             @endif
         </h3>
 
         <div class="mt-3 max-w-xl text-sm text-gray-600">
             <p>
-                {{ __('When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone\'s Google Authenticator application.') }}
+                {{ __('Cuando la autenticación de dos factores está habilitada, se le solicitará un token aleatorio seguro durante la autenticación. Puede recuperar este token desde la aplicación Google Authenticator de su teléfono.') }}
             </p>
         </div>
 
@@ -76,11 +75,11 @@
             @endif
         @endif
 
-        <div class="mt-5">
+        <div class="mt-3">
             @if (! $this->enabled)
                 <x-confirms-password wire:then="enableTwoFactorAuthentication">
-                    <x-button type="button" wire:loading.attr="disabled">
-                        {{ __('Enable') }}
+                    <x-button type="button" class="btn bg-verde text-white" wire:loading.attr="disabled">
+                        {{ __('Habilitar') }}
                     </x-button>
                 </x-confirms-password>
             @else
@@ -93,7 +92,7 @@
                 @elseif ($showingConfirmation)
                     <x-confirms-password wire:then="confirmTwoFactorAuthentication">
                         <x-button type="button" class="me-3" wire:loading.attr="disabled">
-                            {{ __('Confirm') }}
+                            {{ __('Confirmar') }}
                         </x-button>
                     </x-confirms-password>
                 @else

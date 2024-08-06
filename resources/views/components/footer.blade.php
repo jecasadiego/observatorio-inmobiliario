@@ -1,6 +1,6 @@
 <!-- Footer goes here -->
 
-<footer class="container-fluid m-0" style="background: linear-gradient(to top, #05af65 80%, transparent 20%);">
+<footer class="container-fluid m-0 mt-5" style="background: linear-gradient(to top, #05af65 80%, transparent 20%);">
 
     <div class="row justify-content-center">
 
@@ -11,21 +11,25 @@
                 <div class="col-11 col-md-8 bg-white py-5 mb-4 px-5"
                     style="border: 1px solid #c5c5c5; border-radius: 10px;">
 
-                    <h2 class="text-center" style="font-weight: 600 !important; font-size: 1.2rem;">Catastro
-                        Sede Principal</h2>
+                    <h2 class="text-center" style="font-weight: 600 !important; font-size: 1.2rem;">{{ $entidad->nombre }}
+                    </h2>
+                    <h3 class="text-center" style="font-weight: 600 !important; font-size: 1.2rem ; color:#05af65">
+                        {{ $entidad->nombre_oficina }}</h3>
 
-
+                    <b>
+                        <h4 class="text-center" style="font-weight: 600 !important; font-size: 1.2rem; color:black">
+                            {{ $entidad->descripcion }}</h4>
+                    </b>
 
                     <p class="light second-family text-small-two text-center">
 
-
+                        {{ $entidad->direccion }}
 
                     </p>
 
-                    <p class="light second-family text-small-two text-center" style="margin-bottom: 15px">Atención de
-                        lunes a viernes de 8:00am a 12:00pm y 1:00pm a 5:00pm - Email de atención al usuario
-                        <strong></strong> - Notificaciones judiciales:
-                        <strong></strong>
+                    <p class="light second-family text-small-two text-center" style="margin-bottom: 15px">{{ $entidad->descripcion_horario }} - Email de atención al usuario
+                        <strong>{{ $entidad->email_atencion_usuarios}}</strong> - Notificaciones judiciales:
+                        <strong>{{ $entidad->email_noti_judiciales }}</strong>
 
                     </p>
 

@@ -5,15 +5,15 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Models\Entidad;
 
 class navbar extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public $entidad;
+
     public function __construct()
     {
-        //
+        $this->entidad = Entidad::first();
     }
 
     /**
@@ -21,6 +21,6 @@ class navbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.navbar');
+        return view('components.navbar', ['entidad' => $this->entidad]);
     }
 }

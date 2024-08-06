@@ -5,22 +5,20 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Models\Entidad;
 
-class footer extends Component
+
+class Footer extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public $entidad;
+
     public function __construct()
     {
-        //
+        $this->entidad = Entidad::first();
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
-        return view('components.footer');
+        return view('components.footer', ['entidad' => $this->entidad]);
     }
 }

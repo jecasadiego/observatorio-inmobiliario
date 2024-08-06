@@ -6,151 +6,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!--Icon-->
+    <link rel="icon" href="{{ asset('img/ico-yopal.png') }}">
+
+
     <!-- Scripts -->
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
-    <!-- Styles -->
     @livewireStyles
+
+    <!-- Styles -->
+
 </head>
 
 <body class="font-sans antialiased">
     <x-banner />
+    <div id="spinner-overlay"></div>
+    <div id="spinner"></div>
 
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="header-style">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+
         <!-- Page Content -->
         <main class="mb-5">
             {{ $slot }}
         </main>
         <x-footer />
     </div>
-
+    <x-toast></x-toast>
     @stack('modals')
 
     @livewireScripts
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function showToast(message) {
+                var toast = document.getElementById('toast');
+                var toastMessage = document.getElementById('toast-message');
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                const notificationId = '{{ optional(auth()->user()->unreadNotifications->first())->id }}';
+                setTimeout(closeToast(notificationId), 5000);
+            }
+
+            function closeToast(notificationId) {
+                var toasts = document.querySelectorAll('.toast');
+                toasts.forEach(function(toast) {
+                    toast.classList.remove('show');
+                });
+
+                if (notificationId) {
+                    fetch(`/notifications/${notificationId}/mark-as-read`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            // Ocultar el toast
+                            const toast = document.getElementById('toast');
+                            if (toast) {
+                                toast.classList.remove('show');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                showToast("{{ session('success') }}", 'success');
+            @elseif (session('error'))
+                showToast("{{ session('error') }}", 'error');
+            @endif
+            @if (auth()->check() && auth()->user()->unreadNotifications->count() > 0)
+                showToast("{{ auth()->user()->notifications->first()->data['message'] }}", 'success');
+            @endif
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var spinner = document.getElementById('spinner');
+            var spinnerOverlay = document.getElementById('spinner-overlay');
+
+            function showSpinner() {
+                spinner.style.display = 'block';
+                spinnerOverlay.style.display = 'block';
+            }
+
+            function hideSpinner() {
+                spinner.style.display = 'none';
+                spinnerOverlay.style.display = 'none';
+            }
+
+            document.addEventListener('submit', function() {
+                showSpinner();
+                let timeout = setTimeout(function() {
+                    if (document.readyState === 'complete') {
+                        hideSpinner();
+                    } else {
+
+                        let intervalCheck = setInterval(function() {
+                            if (document.readyState === 'complete') {
+                                hideSpinner();
+                                clearInterval(intervalCheck);
+                            }
+                        }, 100);
+                    }
+                }, 3000);
+            });
+
+
+            window.addEventListener('load', function() {
+                hideSpinner();
+            });
+
+            window.addEventListener('beforeunload', function() {
+                showSpinner();
+            });
+        });
+    </script>
 </body>
-
-<style>
-    .header-style {
-        background: #fff;
-        position: relative;
-        padding: 20px 0 10px 0;
-        /* Añadido padding inferior de 10px */
-        text-align: left;
-        /* Alinea el texto a la izquierda */
-    }
-
-    .header-style::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 4%;
-        /* Ajusta para dejar espacio al inicio */
-        right: 20%;
-        /* Ajusta para dejar más espacio al final */
-        height: 3px;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 1px;
-    }
-
-    .header-text {
-        font-size: 1.25rem;
-        /* 20px si estás usando base 16px */
-        font-weight: 600;
-        /* semi-bold */
-        color: #1a202c;
-        /* text-gray-800 */
-        margin-bottom: 0;
-        /* Elimina el margen inferior */
-        padding-left: 3%;
-        /* Ajustado para alinear con el inicio de la línea */
-        padding-bottom: 10px;
-        /* Espacio adicional abajo para no pegar al borde o línea */
-    }
-
-    .title-style {
-        background: #fff;
-        position: relative;
-        padding: 20px 0;
-        text-align: left;
-    }
-
-    .title-style::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 4%;
-        right: 85%;
-        height: 4px;
-        /* Línea más gruesa */
-        background: #4caf50;
-        /* Color verde, ajusta según necesites */
-        border-radius: 0;
-        /* Línea recta sin bordes redondeados */
-    }
-
-    .title-text {
-        font-size: 1.5rem;
-        /* Ajusta el tamaño del texto */
-        font-weight: bold;
-        /* Texto en negrita */
-        color: #333;
-        /* Color del texto */
-        margin: 0;
-
-        padding-left: 2%;
-
-        /* Sin márgenes adicionales para alinear correctamente */
-    }
-
-    .user-btn {
-        background: transparent;
-        border: none;
-        color: #333;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .tab-content {
-        background: #ffffff;
-        /* Fondo blanco para el contenido */
-        padding: 20px;
-        border: 1px solid #ccc;
-        /* Borde sutil para el contenido */
-        border-top: none;
-        /* Eliminar el borde superior para unirlo con las tabs */
-    }
-
-    .nav-tabs .nav-link.active {
-        background-color: #ffffff;
-        border-color: #ccc #ccc #ffffff;
-        /* Borde específico para fusionar con el contenido */
-        border-bottom: 2px solid green;
-        /* Línea verde debajo de la tab activa */
-    }
-
-    .py-12 {
-        display: flex;
-        /* Habilita Flexbox */
-        justify-content: center;
-    }
-</style>
 
 </html>

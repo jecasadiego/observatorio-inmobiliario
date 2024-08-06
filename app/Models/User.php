@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\CustomResetPasswordNotification;
+
 
 class User extends Authenticatable
 {
@@ -18,6 +20,12 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+
+    const ESTADO_PENDIENTE = 0;
+    const ESTADO_APROBADO = 1;
+    const ESTADO_RECHAZADO = 2;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,6 +33,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'tipo_documento',
+        'super_admin',
+        'nro_documento',
+        'direccion',
+        'telefono',
+        'estado',
+        'active',
+        'url_documento',
         'email',
         'password',
     ];
@@ -62,4 +78,33 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPasswordNotification($token, (string) $this->email));
+    }
+
+    public function getEstadoTextoAttribute()
+    {
+        switch ($this->estado) {
+            case self::ESTADO_PENDIENTE:
+                return 'Pendiente';
+            case self::ESTADO_APROBADO:
+                return 'Aprobado';
+            default:
+                return 'No aprobado';
+        }
+    }
+
+    public function getEstadoNumero()
+    {
+        return $this->estado;
+    }
+
+    public function getCedulaPathAttribute()
+    {
+        $cedula_path = $this->url_documento;
+        $cedula_path = asset('storage/' . $cedula_path); 
+        return $cedula_path;
+    }
+
 }

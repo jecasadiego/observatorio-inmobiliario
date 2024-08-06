@@ -1,1 +1,312 @@
 @import "node_modules/bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+*{
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+// colores
+.verde{
+    color: #05AF65!important;
+}
+.bg-verde{
+    background-color: #05AF65!important;
+}
+
+.bg-verde:hover{
+    background-color: #069657!important;
+    transition: 0.2s;
+}
+
+
+.gris{
+    color: #363A3D!important;
+}
+.azul{
+    color: #164267!important;
+}
+.bg-azul{
+    background-color: #164267!important;
+}
+
+/* principal */
+.header-style {
+    background: #fff;
+    position: relative;
+    padding: 20px 0 10px 0;
+    /* Añadido padding inferior de 10px */
+    text-align: left;
+    /* Alinea el texto a la izquierda */
+}
+
+.header-style::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 4%;
+    /* Ajusta para dejar espacio al inicio */
+    right: 20%;
+    /* Ajusta para dejar más espacio al final */
+    height: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
+}
+
+.title-style {
+    background: #fff;
+    position: relative;
+    padding: 20px 0;
+    text-align: left;
+}
+
+.title-style::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 4%;
+    right: 85%;
+    height: 4px;
+    /* Línea más gruesa */
+    background: #4caf50;
+    /* Color verde, ajusta según necesites */
+    border-radius: 0;
+    /* Línea recta sin bordes redondeados */
+}
+
+.user-btn {
+    background: transparent;
+    border: none;
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-content {
+    background: #ffffff;
+    padding: 20px;
+    border: 0;
+    border-radius: 0 4px 4px 4px;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #ffffff;
+}
+/* tab resumen */
+.stat-item {
+    background-color: #ffffff;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: background-color 0.1s ease-in;
+}
+
+.text-tab{
+    color: #3C8FCB;
+}
+
+.stat-item .stat-number {
+    width: 35px;
+    height: 35px;
+    background-color: #05AF60;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.stat-item .stat-label {
+    flex-grow: 1;
+    font-weight: bold;
+}
+.stat-item:hover .stat-label {
+    color: white;
+}
+
+.stat-item:hover {
+    background-color: #05AF65;
+}
+// fin principal
+
+.banner-container {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+@media (max-width: 768px) {
+    .banner-container {
+        min-height: 200px;
+    }
+}
+
+@media (min-width: 769px) {
+    .banner-container {
+        min-height: 300px;
+    }
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-text {
+    text-align: center;
+}
+
+.banner-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    color: #05AF65;
+    border: 1.5px solid #05AF65;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.banner-button:hover {
+    background-color: #05AF65;
+    color: white;
+    border: 1.5px solid #05AF65;
+}
+
+.etiqueta {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #E7B400;
+    color: white;
+    padding: 4px 30px;
+    border-radius: 50px;
+}
+
+.divider{
+    width: 13%;
+    height: 5px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #05AF65 0%, #03693D 94.96%);
+}
+
+.card-form{
+    box-shadow: 4px 9px 15px -5px #0000000D;
+    border-radius: 20px;
+    border: 0;
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 300px;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    margin-left: auto;
+    cursor: pointer;
+}
+.about-section {
+    padding: 50px 0;
+}
+
+.image-background {
+    background-color: #05AF65;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.about-section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+#spinner-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+#spinner {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 50%;
+}
+
+#spinner::before {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    border: 5px solid #28a745;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
